@@ -47,16 +47,20 @@ export default function SingleQueueInfo({ queue, match, history }) {
         {formatRelative(new Date(queue.start), Date.now())} to{' '}
         {formatRelative(new Date(queue.end), Date.now())}
       </p>
-      <ol>
-        {queue.students.map((student) => (
-          <li key={student}>
-            <Link to={`${match.url}/students/${student}`}>{student}</Link>{' '}
-            <button type="button" onClick={() => deleteStudent(student)}>
-              remove
-            </button>
-          </li>
-        ))}
-      </ol>
+      {queue.students.length === 0 ? (
+        'No students in line'
+      ) : (
+        <ol>
+          {queue.students.map((student) => (
+            <li key={student}>
+              <Link to={`${match.url}/students/${student}`}>{student}</Link>{' '}
+              <button type="button" onClick={() => deleteStudent(student)}>
+                remove
+              </button>
+            </li>
+          ))}
+        </ol>
+      )}
     </>
   );
 }
