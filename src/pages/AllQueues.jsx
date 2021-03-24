@@ -50,9 +50,10 @@ export default function AllQueues({ history, location }) {
         ? 'No queues found'
         : queues.map((queue) => (
             <p key={queue.id.$oid}>
-              <Link to={`/queues/${queue.id.$oid}`}>
+              <Link to={`/queues/${queue.id.$oid}/join`}>
                 {queue.course} – {queue.name}
-              </Link>
+              </Link>{' '}
+              [<Link to={`/queues/${queue.id.$oid}`}>details</Link>]
             </p>
           ))}
     </>

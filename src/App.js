@@ -4,6 +4,7 @@ import {
 import './App.css';
 import AllQueues from './pages/AllQueues';
 import EditQueue from './pages/EditQueue';
+import EditStudent from './pages/EditStudent';
 import Home from './pages/Home';
 import SingleQueue from './pages/SingleQueue';
 
@@ -22,6 +23,8 @@ function App() {
         <Switch>
           <Route path="/queues/new" component={EditQueue} />
           <Route path="/queues/:qid/edit" component={EditQueue} />
+          <Route path="/queues/:qid/join" component={EditStudent} />
+          <Route path="/queues/:qid/students/:sid/edit" component={EditStudent} />
           <Route path="/queues/:qid" component={SingleQueue} />
           <Route path="/queues" component={AllQueues} />
           <Route path="/" component={Home} />
