@@ -1,15 +1,62 @@
-import React, { useState } from 'react';
-import { Field, Form, Formik } from 'formik';
+import React, { useEffect } from 'react';
+import { Field, Form, Formik, useFormikContext } from 'formik';
 import { API_PREFIX } from '../constants';
+import { format } from 'date-fns';
+
+function EditQueueForm({ isSubmitting, qid }) {
+  const { setValues } = useFormikContext();
+
+  useEffect(() => {
+    if (!qid) {
+      return;
+    }
+
+    fetch(`${API_PREFIX}/queues/${qid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const formData = {
+          course: data.course,
+          name: data.name,
+          start: format(new Date(data.start), "yyyy-MM-dd'T'HH:mm"),
+          end: format(new Date(data.end), "yyyy-MM-dd'T'HH:mm"),
+          location: data.location,
+        };
+        setValues(formData);
+      });
+  }, [qid, setValues]);
+
+  return (
+    <Form>
+      <label>
+        Course name
+        <Field name="course" required />
+      </label>
+      <label>
+        Instructor name
+        <Field name="name" required />
+      </label>
+      <label>
+        Start time
+        <Field type="datetime-local" name="start" required />
+      </label>
+      <label>
+        End time
+        <Field type="datetime-local" name="end" required />
+      </label>
+      <label>
+        Location (building or URL)
+        <Field name="location" required />
+      </label>
+      <button type="submit" disabled={isSubmitting}>
+        Submit
+      </button>
+    </Form>
+  );
+}
 
 export default function EditQueue({ match, history }) {
-  const [initialValues] = useState({
-    course: '',
-    name: '',
-    start: '',
-    end: '',
-    location: '',
-  });
+  const qid = match.params.qid;
+  const isNew = !qid;
 
   const onSubmit = (values, { setSubmitting }) => {
     const newValues = { ...values };
@@ -17,8 +64,11 @@ export default function EditQueue({ match, history }) {
     newValues.end = new Date(values.end).toISOString();
     newValues.students = [];
 
-    fetch(`${API_PREFIX}/queues`, {
-      method: 'POST',
+    const url = `${API_PREFIX}/${isNew ? 'queues' : `queues/${qid}`}`;
+    const method = isNew ? 'POST' : 'PUT';
+
+    fetch(url, {
+      method,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -26,41 +76,25 @@ export default function EditQueue({ match, history }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setSubmitting(false);
-        history.push(`/queues/${data}`);
+        // Redirect to the new/existing queue
+        history.push(`/queues/${isNew ? data : qid}`);
       });
+    // TODO: handle error
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
-      {({ isSubmitting }) => (
-        <Form>
-          <label>
-            Course name
-            <Field name="course" required />
-          </label>
-          <label>
-            Instructor name
-            <Field name="name" required />
-          </label>
-          <label>
-            Start time
-            <Field type="datetime-local" name="start" required />
-          </label>
-          <label>
-            End time
-            <Field type="datetime-local" name="end" required />
-          </label>
-          <label>
-            Location (building or URL)
-            <Field name="location" required />
-          </label>
-          <button type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
-        </Form>
-      )}
+    <Formik
+      initialValues={{
+        course: '',
+        name: '',
+        start: '',
+        end: '',
+        location: '',
+      }}
+      onSubmit={onSubmit}
+    >
+      {(props) => <EditQueueForm {...props} qid={qid} />}
     </Formik>
   );
 }
