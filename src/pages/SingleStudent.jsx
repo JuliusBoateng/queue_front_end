@@ -4,7 +4,7 @@ import { API_PREFIX } from '../constants';
 import EditStudent from './EditStudent';
 import SingleStudentInfo from './SingleStudentInfo';
 
-export default function SingleStudent({ history, location, match }) {
+export default function SingleStudent({ queue, history, location, match }) {
   const sid = match.params.sid;
   const isUpdated = location.search === '?updated=true';
   const [status, setStatus] = useState('Loading...');
@@ -40,6 +40,13 @@ export default function SingleStudent({ history, location, match }) {
       {status || (
         <>
           <h3>{student.name}</h3>
+          <p>
+            Position in line:{' '}
+            {queue.students.findIndex(
+              (student) => (typeof student === 'string' ? student : student.id.$oid) === sid
+            ) + 1}{' '}
+            of {queue.students.length}
+          </p>
           <Switch>
             <Route
               path={`${match.path}/edit`}
