@@ -1,3 +1,4 @@
+import { formatRelative } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_PREFIX } from '../constants';
@@ -13,18 +14,23 @@ export default function SingleQueue({ match }) {
       .then((data) => {
         setQueue(data);
         setStatus(null);
-      }).catch(() => {
-        setStatus('Not found – invalid ID')
+      })
+      .catch(() => {
+        setStatus('Not found – invalid ID');
       });
   }, [qid]);
 
   return (
     <>
+      <Link to='/queues'>Back to all office hours</Link>
       <h2>Queue {qid}</h2>
       {status || (
-        <p>
-          {queue.course} – {queue.name} [<Link to={`${match.url}/edit`}>edit</Link>]
-        </p>
+        <>
+          <p>
+            {queue.course} – {queue.name} [<Link to={`${match.url}/edit`}>edit</Link>]
+          </p>
+          <p>{formatRelative(new Date(queue.start), Date.now())} to {formatRelative(new Date(queue.end), Date.now())}</p>
+        </>
       )}
     </>
   );
