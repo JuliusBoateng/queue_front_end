@@ -1,4 +1,4 @@
-import { formatRelative } from 'date-fns';
+import { formatDistanceToNow, formatRelative } from 'date-fns';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { API_PREFIX } from '../constants';
@@ -51,14 +51,25 @@ export default function SingleQueueInfo({ queue, match, history }) {
         'No students in line'
       ) : (
         <ol>
-          {queue.students.map((student) => (
-            <li key={student}>
-              <Link to={`${match.url}/students/${student}`}>{student}</Link>{' '}
-              <button type="button" onClick={() => deleteStudent(student)}>
-                remove
-              </button>
-            </li>
-          ))}
+          {queue.students.map((student) =>
+            // TEMPORARY: remove when student is an object
+            typeof student === 'string' ? (
+              <li key={student}>
+                <Link to={`${match.url}/students/${student}`}>{student}</Link>{' '}
+                <button type="button" onClick={() => deleteStudent(student)}>
+                  remove
+                </button>
+              </li>
+            ) : (
+              <li key={student.id.$oid}>
+                <Link to={`${match.url}/students/${student.id.$oid}`}>{student.name}</Link> (in line
+                for {formatDistanceToNow(student.time)}){' '}
+                <button type="button" onClick={() => deleteStudent(student.id.$oid)}>
+                  remove
+                </button>
+              </li>
+            )
+          )}
         </ol>
       )}
     </>
