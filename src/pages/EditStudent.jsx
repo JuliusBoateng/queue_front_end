@@ -67,15 +67,18 @@ export default function EditStudent({ match, history }) {
   };
 
   return (
-    <Formik
-      initialValues={{
-        name: '',
-        desc: '',
-        time: '',
-      }}
-      onSubmit={onSubmit}
-    >
-      {(props) => <EditStudentForm {...props} sid={sid} />}
-    </Formik>
+    <>
+      <h2>{isNew ? 'Join office hours' : 'Edit student details'}</h2>
+      <Formik
+        initialValues={{
+          name: '',
+          desc: '',
+          time: '',
+        }}
+        onSubmit={onSubmit}
+      >
+        {(props) => <EditStudentForm {...props} sid={sid} />}
+      </Formik>
+    </>
   );
 }

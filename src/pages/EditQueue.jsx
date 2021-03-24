@@ -86,17 +86,20 @@ export default function EditQueue({ match, history }) {
   };
 
   return (
-    <Formik
-      initialValues={{
-        course: '',
-        name: '',
-        start: '',
-        end: '',
-        location: '',
-      }}
-      onSubmit={onSubmit}
-    >
-      {(props) => <EditQueueForm {...props} qid={qid} />}
-    </Formik>
+    <>
+      <h2>{isNew ? 'Create new office hours' : 'Edit office hours'}</h2>
+      <Formik
+        initialValues={{
+          course: '',
+          name: '',
+          start: '',
+          end: '',
+          location: '',
+        }}
+        onSubmit={onSubmit}
+      >
+        {(props) => <EditQueueForm {...props} qid={qid} />}
+      </Formik>
+    </>
   );
 }
