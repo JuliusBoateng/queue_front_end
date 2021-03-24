@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import { API_PREFIX } from '../constants';
 import EditQueue from './EditQueue';
+import EditStudent from './EditStudent';
 import SingleQueueInfo from './SingleQueueInfo';
+import SingleStudent from './SingleStudent';
 
 export default function SingleQueue({ history, location, match }) {
   const qid = match.params.qid;
@@ -40,6 +42,14 @@ export default function SingleQueue({ history, location, match }) {
             <Route
               path={`${match.path}/edit`}
               render={(props) => <EditQueue queue={queue} {...props} />}
+            />
+            <Route
+              path={`${match.path}/join`}
+              render={(props) => <EditStudent queue={queue} {...props} />}
+            />
+            <Route
+              path={`${match.path}/students/:sid`}
+              render={(props) => <SingleStudent queue={queue} {...props} />}
             />
             <Route
               path={match.path}

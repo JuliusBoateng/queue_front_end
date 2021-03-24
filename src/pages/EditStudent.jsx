@@ -1,27 +1,8 @@
-import React, { useEffect } from 'react';
-import { Field, Form, Formik, useFormikContext } from 'formik';
+import React from 'react';
+import { Field, Form, Formik } from 'formik';
 import { API_PREFIX } from '../constants';
 
-function EditStudentForm({ isSubmitting, sid }) {
-  const { setValues } = useFormikContext();
-
-  useEffect(() => {
-    if (!sid) {
-      return;
-    }
-
-    fetch(`${API_PREFIX}/students/${sid}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const formData = {
-          name: data.name,
-          desc: data.desc,
-          time: data.time,
-        };
-        setValues(formData);
-      });
-  }, [sid, setValues]);
-
+function EditStudentForm({ isSubmitting }) {
   return (
     <Form>
       <label>
@@ -39,7 +20,7 @@ function EditStudentForm({ isSubmitting, sid }) {
   );
 }
 
-export default function EditStudent({ match, history }) {
+export default function EditStudent({ student, match, history }) {
   const { qid, sid } = match.params;
   const isNew = !sid;
 
@@ -61,23 +42,22 @@ export default function EditStudent({ match, history }) {
       .then((data) => {
         setSubmitting(false);
         // Redirect to the new/existing queue
-        history.push(`/queues/${qid}/students/${isNew ? data : sid}`);
+        history.push(`/queues/${qid}/students/${isNew ? data : `${sid}?updated=true`}`);
       });
     // TODO: handle error
+  };
+
+  const initialValues = student || {
+    name: '',
+    desc: '',
+    time: '',
   };
 
   return (
     <>
       <h2>{isNew ? 'Join office hours' : 'Edit student details'}</h2>
-      <Formik
-        initialValues={{
-          name: '',
-          desc: '',
-          time: '',
-        }}
-        onSubmit={onSubmit}
-      >
-        {(props) => <EditStudentForm {...props} sid={sid} />}
+      <Formik initialValues={initialValues} onSubmit={onSubmit}>
+        {(props) => <EditStudentForm {...props} />}
       </Formik>
     </>
   );

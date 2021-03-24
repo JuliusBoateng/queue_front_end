@@ -84,7 +84,7 @@ export default function EditQueue({ queue, match, history }) {
     <>
       <h3>{isNew ? 'Create new office hours' : 'Edit office hours'}</h3>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
-        {(props) => <EditQueueForm {...props} qid={qid} />}
+        {(props) => <EditQueueForm {...props} />}
       </Formik>
     </>
   );
