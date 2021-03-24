@@ -1,10 +1,12 @@
-import { formatRelative } from 'date-fns';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import { API_PREFIX } from '../constants';
+import EditQueue from './EditQueue';
+import SingleQueueInfo from './SingleQueueInfo';
 
-export default function SingleQueue({ match, history }) {
+export default function SingleQueue({ history, location, match }) {
   const qid = match.params.qid;
+  const isUpdated = location.search === '?updated=true';
   const [status, setStatus] = useState('Loading...');
   const [queue, setQueue] = useState();
 
@@ -14,40 +16,16 @@ export default function SingleQueue({ match, history }) {
       .then((data) => {
         setQueue(data);
         setStatus(null);
+
+        if (isUpdated) {
+          history.replace(location.pathname);
+        }
       })
       .catch(() => {
         setStatus('Not found – invalid ID');
       });
-  }, [qid]);
-
-  const deleteQueue = () => {
-    if (
-      !window.confirm(
-        'Are you sure you want to delete this office hours session? This cannot be undone.'
-      )
-    ) {
-      return;
-    }
-
-    fetch(`${API_PREFIX}/queues/${qid}`, { method: 'DELETE' }).then(() => {
-      history.push('/queues');
-    });
-  };
-
-  const deleteStudent = (sid) => {
-    if (
-      !window.confirm(
-        'Are you sure you want to remove this student from line? This cannot be undone.'
-      )
-    ) {
-      return;
-    }
-
-    fetch(`${API_PREFIX}/queues/${qid}/students/${sid}`, { method: 'DELETE' }).then(() => {
-      // history.push('/queues');
-      window.location.reload();
-    });
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qid, isUpdated]);
 
   return (
     <>
@@ -56,22 +34,18 @@ export default function SingleQueue({ match, history }) {
       {status || (
         <>
           <p>
-            {queue.course} – {queue.name} [<Link to={`${match.url}/edit`}>edit</Link>]
-            <button type="button" onClick={deleteQueue}>
-              delete
-            </button>
+            {queue.course} – {queue.name}
           </p>
-          <p>
-            {formatRelative(new Date(queue.start), Date.now())} to{' '}
-            {formatRelative(new Date(queue.end), Date.now())}
-          </p>
-          <ol>
-            {queue.students.map((student) => (
-              <li key={student}>
-                <Link to={`${match.url}/students/${student}`}>{student}</Link> <button type="button" onClick={() => deleteStudent(student)}>remove</button>
-              </li>
-            ))}
-          </ol>
+          <Switch>
+            <Route
+              path={`${match.path}/edit`}
+              render={(props) => <EditQueue queue={queue} {...props} />}
+            />
+            <Route
+              path={match.path}
+              render={(props) => <SingleQueueInfo queue={queue} {...props} />}
+            />
+          </Switch>
         </>
       )}
     </>

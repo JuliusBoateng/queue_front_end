@@ -29,8 +29,8 @@ function EditStudentForm({ isSubmitting, sid }) {
         <Field name="name" required />
       </label>
       <label>
-        Description of question
-        <Field name="desc" required />
+        Short description of question
+        <Field name="desc" />
       </label>
       <button type="submit" disabled={isSubmitting}>
         Submit

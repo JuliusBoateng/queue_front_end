@@ -22,7 +22,6 @@ function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/queues/new" component={EditQueue} />
-          <Route path="/queues/:qid/edit" component={EditQueue} />
           <Route path="/queues/:qid/join" component={EditStudent} />
           <Route path="/queues/:qid/students/:sid/edit" component={EditStudent} />
           <Route path="/queues/:qid" component={SingleQueue} />

@@ -1,32 +1,11 @@
-import React, { useEffect } from 'react';
-import { Field, Form, Formik, useFormikContext } from 'formik';
+import React from 'react';
+import { Field, Form, Formik } from 'formik';
 import { API_PREFIX } from '../constants';
 import { format } from 'date-fns/fp';
 
 const formatDateForInput = format("yyyy-MM-dd'T'HH:mm");
 
-function EditQueueForm({ isSubmitting, qid }) {
-  const { setValues } = useFormikContext();
-
-  useEffect(() => {
-    if (!qid) {
-      return;
-    }
-
-    fetch(`${API_PREFIX}/queues/${qid}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const formData = {
-          course: data.course,
-          name: data.name,
-          start: formatDateForInput(new Date(data.start)),
-          end: formatDateForInput(new Date(data.end)),
-          location: data.location,
-        };
-        setValues(formData);
-      });
-  }, [qid, setValues]);
-
+function EditQueueForm({ isSubmitting }) {
   return (
     <Form>
       <label>
@@ -56,9 +35,25 @@ function EditQueueForm({ isSubmitting, qid }) {
   );
 }
 
-export default function EditQueue({ match, history }) {
+export default function EditQueue({ queue, match, history }) {
   const qid = match.params.qid;
   const isNew = !qid;
+
+  const initialValues = queue
+    ? {
+        course: queue.course,
+        name: queue.name,
+        start: formatDateForInput(new Date(queue.start)),
+        end: formatDateForInput(new Date(queue.end)),
+        location: queue.location,
+      }
+    : {
+        course: '',
+        name: '',
+        start: '',
+        end: '',
+        location: '',
+      };
 
   const onSubmit = (values, { setSubmitting }) => {
     const newValues = { ...values };
@@ -80,24 +75,15 @@ export default function EditQueue({ match, history }) {
       .then((data) => {
         setSubmitting(false);
         // Redirect to the new/existing queue
-        history.push(`/queues/${isNew ? data : qid}`);
+        history.push(`/queues/${isNew ? data : `${qid}?updated=true`}`);
       });
     // TODO: handle error
   };
 
   return (
     <>
-      <h2>{isNew ? 'Create new office hours' : 'Edit office hours'}</h2>
-      <Formik
-        initialValues={{
-          course: '',
-          name: '',
-          start: '',
-          end: '',
-          location: '',
-        }}
-        onSubmit={onSubmit}
-      >
+      <h3>{isNew ? 'Create new office hours' : 'Edit office hours'}</h3>
+      <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {(props) => <EditQueueForm {...props} qid={qid} />}
       </Formik>
     </>
