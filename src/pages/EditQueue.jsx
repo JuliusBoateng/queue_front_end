@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { Field, Form, Formik, useFormikContext } from 'formik';
 import { API_PREFIX } from '../constants';
-import { format } from 'date-fns';
+import { format } from 'date-fns/fp';
+
+const formatDateForInput = format("yyyy-MM-dd'T'HH:mm");
 
 function EditQueueForm({ isSubmitting, qid }) {
   const { setValues } = useFormikContext();
@@ -17,8 +19,8 @@ function EditQueueForm({ isSubmitting, qid }) {
         const formData = {
           course: data.course,
           name: data.name,
-          start: format(new Date(data.start), "yyyy-MM-dd'T'HH:mm"),
-          end: format(new Date(data.end), "yyyy-MM-dd'T'HH:mm"),
+          start: formatDateForInput(new Date(data.start)),
+          end: formatDateForInput(new Date(data.end)),
           location: data.location,
         };
         setValues(formData);

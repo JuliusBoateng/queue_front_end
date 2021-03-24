@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { API_PREFIX } from '../constants';
 
 export default function SingleQueue({ match }) {
   const qid = match.params.qid;
-  const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState('Loading...');
   const [queue, setQueue] = useState();
 
   useEffect(() => {
@@ -11,18 +12,18 @@ export default function SingleQueue({ match }) {
       .then((response) => response.json())
       .then((data) => {
         setQueue(data);
-        setIsLoading(false);
+        setStatus(null);
+      }).catch(() => {
+        setStatus('Not found – invalid ID')
       });
   }, [qid]);
 
   return (
     <>
       <h2>Queue {qid}</h2>
-      {isLoading ? (
-        'Loading...'
-      ) : (
+      {status || (
         <p>
-          {queue.course} – {queue.name}
+          {queue.course} – {queue.name} [<Link to={`${match.url}/edit`}>edit</Link>]
         </p>
       )}
     </>
