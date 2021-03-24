@@ -34,6 +34,21 @@ export default function SingleQueue({ match, history }) {
     });
   };
 
+  const deleteStudent = (sid) => {
+    if (
+      !window.confirm(
+        'Are you sure you want to remove this student from line? This cannot be undone.'
+      )
+    ) {
+      return;
+    }
+
+    fetch(`${API_PREFIX}/queues/${qid}/students/${sid}`, { method: 'DELETE' }).then(() => {
+      // history.push('/queues');
+      window.location.reload();
+    });
+  };
+
   return (
     <>
       <Link to="/queues">Back to all office hours</Link>
@@ -50,6 +65,13 @@ export default function SingleQueue({ match, history }) {
             {formatRelative(new Date(queue.start), Date.now())} to{' '}
             {formatRelative(new Date(queue.end), Date.now())}
           </p>
+          <ol>
+            {queue.students.map((student) => (
+              <li key={student}>
+                <Link to={`${match.url}/students/${student}`}>{student}</Link> <button type="button" onClick={() => deleteStudent(student)}>remove</button>
+              </li>
+            ))}
+          </ol>
         </>
       )}
     </>
