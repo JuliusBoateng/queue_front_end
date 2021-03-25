@@ -63,7 +63,7 @@ export default function SingleQueueInfo({ queue, match, history }) {
             ) : (
               <li key={student.id.$oid}>
                 <Link to={`${match.url}/students/${student.id.$oid}`}>{student.name}</Link> (in line
-                for {formatDistanceToNow(student.time)}){' '}
+                for {formatDistanceToNow(new Date(student.time))}){' '}
                 <button type="button" onClick={() => deleteStudent(student.id.$oid)}>
                   remove
                 </button>

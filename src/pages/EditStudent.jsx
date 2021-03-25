@@ -28,7 +28,9 @@ export default function EditStudent({ student, match, history }) {
 
   const onSubmit = (values, { setSubmitting }) => {
     const newValues = { ...values };
-    newValues.time = new Date().toISOString();
+    if (isNew) {
+      newValues.time = new Date().toISOString();
+    }
 
     const url = `${API_PREFIX}/${isNew ? `queues/${qid}/students` : `students/${sid}`}`;
     const method = isNew ? 'POST' : 'PUT';
@@ -44,7 +46,7 @@ export default function EditStudent({ student, match, history }) {
       .then((data) => {
         setSubmitting(false);
         // Redirect to the new/existing queue
-        history.push(`/queues/${qid}/students/${isNew ? data : `${sid}?updated=true`}`);
+        history.push(`/queues/${qid}/students/${isNew ? data : sid}?updated=true`);
       });
     // TODO: handle error
   };
