@@ -26,7 +26,9 @@ export default function EditStudent({ student, match, history }) {
 
   const onSubmit = (values, { setSubmitting }) => {
     const newValues = { ...values };
-    newValues.time = new Date().toISOString();
+    if (isNew) {
+      newValues.time = new Date().toISOString();
+    }
 
     const url = `${API_PREFIX}/${isNew ? `queues/${qid}/students` : `students/${sid}`}`;
     const method = isNew ? 'POST' : 'PUT';
