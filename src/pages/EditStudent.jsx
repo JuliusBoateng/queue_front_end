@@ -44,7 +44,7 @@ export default function EditStudent({ student, match, history }) {
       .then((data) => {
         setSubmitting(false);
         // Redirect to the new/existing queue
-        history.push(`/queues/${qid}/students/${isNew ? data : `${sid}?updated=true`}`);
+        history.push(`/queues/${qid}/students/${isNew ? data : sid}?updated=true`);
       });
     // TODO: handle error
   };
