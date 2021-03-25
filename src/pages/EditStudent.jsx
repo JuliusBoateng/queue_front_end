@@ -5,18 +5,20 @@ import { API_PREFIX } from '../constants';
 function EditStudentForm({ isSubmitting }) {
   return (
     <Form>
-      <label>
-        Name
-        <Field name="name" required />
-      </label>
-      <label>
-        Short description of question
-        <Field name="desc" />
-      </label>
-      <button type="submit" disabled={isSubmitting}>
-        Submit
-      </button>
-    </Form>
+    <div class="form-group">
+      <label> Student Name </label>
+      <Field class="form-control" name="name" required aria-describedby="name" placeholder="Student Name"/>
+    </div>
+
+    <div class="form-group">
+    <label> Question Description </label>
+      <Field class="form-control" name="desc" aria-describedby="desc" placeholder="Description"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary" disabled={isSubmitting}>
+      Submit
+    </button>
+  </Form>
   );
 }
 
@@ -55,7 +57,7 @@ export default function EditStudent({ student, match, history }) {
 
   return (
     <>
-      <h2>{isNew ? 'Join office hours' : 'Edit student details'}</h2>
+      <h2>{isNew ? 'Join Office Hours' : 'Edit Student Details'}</h2>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {(props) => <EditStudentForm {...props} />}
       </Formik>

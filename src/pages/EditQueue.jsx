@@ -8,32 +8,38 @@ const formatDateForInput = format("yyyy-MM-dd'T'HH:mm");
 function EditQueueForm({ isSubmitting }) {
   return (
     <Form>
-      <label>
-        Course name
-        <Field name="course" required />
-      </label>
-      <label>
-        Instructor name
-        <Field name="name" required />
-      </label>
-      <label>
-        Start time
-        <Field type="datetime-local" name="start" required />
-      </label>
-      <label>
-        End time
-        <Field type="datetime-local" name="end" required />
-      </label>
-      <label>
-        Location (building or URL)
-        <Field name="location" required />
-      </label>
-      <button type="submit" disabled={isSubmitting}>
+      <div class="form-group">
+        <label> Course Name </label>
+        <Field class="form-control" name="course" required aria-describedby="course" placeholder="Course Name"/>
+      </div>
+
+      <div class="form-group">
+      <label> TA Name </label>
+        <Field class="form-control" name="name" required aria-describedby="name" placeholder="TA Name"/>
+      </div>
+
+      <div class="form-group">
+      <label> Start Time </label>
+        <Field class="form-control" type="datetime-local" name="start" required aria-describedby="start"/>
+      </div>
+
+      <div class="form-group">
+      <label> End time </label>
+        <Field class="form-control" type="datetime-local" name="end" required aria-describedby="end"/>
+      </div>
+      
+      <div class="form-group">
+      <label> Location (Building or Zoom URL) </label>
+        <Field class="form-control" name="location" required aria-describedby="location" placeholder="Location"/>
+      </div>
+
+      <button type="submit" class="btn btn-primary" disabled={isSubmitting}>
         Submit
       </button>
     </Form>
   );
 }
+
 
 export default function EditQueue({ queue, match, history }) {
   const qid = match.params.qid;
@@ -82,7 +88,7 @@ export default function EditQueue({ queue, match, history }) {
 
   return (
     <>
-      <h3>{isNew ? 'Create new office hours' : 'Edit office hours'}</h3>
+      <h3>{isNew ? 'Create New Office Hours' : 'Edit Office Hours'}</h3>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {(props) => <EditQueueForm {...props} />}
       </Formik>

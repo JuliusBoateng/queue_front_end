@@ -31,19 +31,28 @@ export default function AllQueues({ history, location }) {
     setSubmitting(false);
   };
 
+{/* <div class="form-group">
+        <label> Course Name </label>
+        <Field class="form-control" name="course" required aria-describedby="course" placeholder="Course Name"/>
+      </div> */}
+
   return (
     <>
-      <h2>All office hours</h2>
+      <h2>All Office Hours</h2>
       <Formik initialValues={{ search: '' }} onSubmit={onSearch}>
         {({ isSubmitting }) => (
           <Form>
-            <Field type="search" name="search" />
-            <button type="submit" disabled={isSubmitting}>
-              Search
-            </button>
+            <div class="input-group">
+              {/* <label> Course Name </label> */}
+              <Field class="form-control" type="search" name="search" required aria-describedby="search" placeholder="Search"/>
+              <button type="submit" class="btn btn-primary" disabled={isSubmitting}>
+                Search
+              </button>
+            </div>
           </Form>
         )}
       </Formik>
+      <br></br>
       {isLoading
         ? 'Loading...'
         : queues.length === 0

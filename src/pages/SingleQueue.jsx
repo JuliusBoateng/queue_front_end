@@ -32,11 +32,11 @@ export default function SingleQueue({ history, location, match }) {
   return (
     <>
       <Link to="/queues">Back to all office hours</Link>
-      <h2>Queue {qid}</h2>
+      <h2>Queue ID: {qid}</h2>
       {status || (
         <>
           <p>
-            {queue.course} – {queue.name}
+            Course: {queue.course} <br></br> Name: {queue.name}
           </p>
           <Switch>
             <Route

@@ -10,22 +10,24 @@ import SingleQueue from './pages/SingleQueue';
 function App() {
   return (
     <Router>
-      <div>
-        <nav>
-          <h1>
-            <Link to="/">queue</Link>
-          </h1>
-        </nav>
-
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/queues/new" component={EditQueue} />
-          <Route path="/queues/:qid" component={SingleQueue} />
-          <Route path="/queues" component={AllQueues} />
-          <Route path="/" component={Home} />
-        </Switch>
-      </div>
+        <div class = "jumbotron jumbotron-fluid banner">
+          <div class = "container text-center text-white">
+            <h1 id="queue">
+              <Link to="/">queue</Link>
+            </h1>
+          </div>
+        </div>
+        
+        <div class="container h-75">
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/queues/new" component={EditQueue} />
+            <Route path="/queues/:qid" component={SingleQueue} />
+            <Route path="/queues" component={AllQueues} />
+            <Route path="/" component={Home} />
+          </Switch>
+        </div>
     </Router>
   );
 }
