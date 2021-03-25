@@ -37,16 +37,17 @@ export default function SingleQueueInfo({ queue, match, history }) {
 
   return (
     <>
-      <p>
-        [<Link to={`${match.url}/edit`}>edit</Link>]
-        <button type="button" onClick={deleteQueue}>
-          delete
+        <p>
+        <Link to={`${match.url}/edit`} class="btn btn-warning buttonspace" role="button">Edit Office Hours</Link>
+        <button type="button" onClick={deleteQueue} class="btn btn-danger buttonspace">
+          DELETE Office Hours
         </button>
-      </p>
-      <p>
-        {formatRelative(new Date(queue.start), Date.now())} to{' '}
+        </p>
+      
+      <h3>
+        Duration: {formatRelative(new Date(queue.start), Date.now())} to{' '}
         {formatRelative(new Date(queue.end), Date.now())}
-      </p>
+      </h3>
       {queue.students.length === 0 ? (
         'No students in line'
       ) : (
@@ -56,7 +57,7 @@ export default function SingleQueueInfo({ queue, match, history }) {
             typeof student === 'string' ? (
               <li key={student}>
                 <Link to={`${match.url}/students/${student}`}>{student}</Link>{' '}
-                <button type="button" onClick={() => deleteStudent(student)}>
+                <button type="button" onClick={() => deleteStudent(student)} class="btn btn-danger btn-sm">
                   remove
                 </button>
               </li>
@@ -64,7 +65,7 @@ export default function SingleQueueInfo({ queue, match, history }) {
               <li key={student.id.$oid}>
                 <Link to={`${match.url}/students/${student.id.$oid}`}>{student.name}</Link> (in line
                 for {formatDistanceToNow(new Date(student.time))}){' '}
-                <button type="button" onClick={() => deleteStudent(student.id.$oid)}>
+                <button type="button" onClick={() => deleteStudent(student.id.$oid)} class="btn btn-danger btn-sm">
                   remove
                 </button>
               </li>

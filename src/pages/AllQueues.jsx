@@ -31,11 +31,6 @@ export default function AllQueues({ history, location }) {
     setSubmitting(false);
   };
 
-{/* <div class="form-group">
-        <label> Course Name </label>
-        <Field class="form-control" name="course" required aria-describedby="course" placeholder="Course Name"/>
-      </div> */}
-
   return (
     <>
       <h2>All Office Hours</h2>

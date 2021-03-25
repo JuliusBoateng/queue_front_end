@@ -24,15 +24,15 @@ export default function SingleStudentInfo({ student, match, history }) {
   return (
     <>
       <p>
-        [<Link to={`${match.url}/edit`}>edit</Link>]
-        <button type="button" onClick={deleteStudent}>
-          leave line
+        <Link to={`${match.url}/edit`} class="btn btn-warning buttonspace" role="button">Edit Info</Link>
+        <button type="button" onClick={deleteStudent} class="btn btn-danger buttonspace">
+          Leave line
         </button>
       </p>
       <p>
-        In line since {formatRelative(new Date(student.time), Date.now())}
+        Waiting in line since: <u>{formatRelative(new Date(student.time), Date.now())}</u>
       </p>
-      <p>{student.desc}</p>
+      <h3>Question description: {student.desc}</h3>
     </>
   );
 }

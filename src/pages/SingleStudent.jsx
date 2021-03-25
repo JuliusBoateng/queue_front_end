@@ -39,13 +39,13 @@ export default function SingleStudent({ queue, history, location, match }) {
       {/* <Link to="/queues">Back to all office hours</Link> */}
       {status || (
         <>
-          <h3>{student.name}</h3>
+          <h3>Student Name: {student.name}</h3>
           <p>
-            Position in line:{' '}
+            Position in line:{' '}<u>
             {queue.students.findIndex(
               (student) => (typeof student === 'string' ? student : student.id.$oid) === sid
             ) + 1}{' '}
-            of {queue.students.length}
+            of {queue.students.length}</u>
           </p>
           <Switch>
             <Route
